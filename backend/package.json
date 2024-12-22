@@ -1,0 +1,33 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "production ready server",
+    "main": "server.ts",
+    "scripts": {
+        "start": "nodemon server.ts",
+        "server:dev": "nodemon server.ts",
+        "build": "tsc",
+        "server:prod": "set NODE_ENV=production&&node server.ts",
+        "server:prod:mac": "export NODE_ENV=production&&node server.ts"
+    },
+    "author": "Me",
+    "license": "ISC",
+    "dependencies": {
+        "@typegoose/typegoose": "^12.5.0",
+        "@types/express": "^4.17.21",
+        "@types/nodemon": "^1.19.6",
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.5",
+        "cryptr": "^6.0.3",
+        "dotenv": "^16.3.2",
+        "express": "^4.17.1",
+        "moment-timezone": "^0.5.45",
+        "mongoose": "^8.4.4",
+        "socket.io": "^4.2.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.3"
+    }
+}

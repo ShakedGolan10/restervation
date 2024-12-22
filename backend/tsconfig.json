@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./",
+    "experimentalDecorators": true
+  },
+  "include": ["*.ts", "api/**/*.ts"],
+  "exclude": ["node_modules"]
+}
