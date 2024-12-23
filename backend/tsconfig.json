@@ -8,6 +8,6 @@
     "outDir": "./",
     "experimentalDecorators": true
   },
-  "include": ["*.ts", "api/**/*.ts"],
+  "include": ["*.ts", "api/**/*.ts", "nest/modules/app.module.ts"],
   "exclude": ["node_modules"]
 }

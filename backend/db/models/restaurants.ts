@@ -1,5 +1,4 @@
-import { prop, modelOptions } from "@typegoose/typegoose";
-
+import { prop, modelOptions } from '@typegoose/typegoose';
 
 export class Table {
   @prop({ required: true })
@@ -9,11 +8,8 @@ export class Table {
   public id!: string;
 }
 
-
-
-@modelOptions({ schemaOptions: { collection: "restaurants" } })
+@modelOptions({ schemaOptions: { collection: 'restaurants' } })
 export class Restaurants {
-
   @prop({ type: String, required: true })
   public name!: string;
 
@@ -25,5 +21,4 @@ export class Restaurants {
 
   @prop({ type: Array<Table>, default: [] })
   public tables!: Table[];
-
 }

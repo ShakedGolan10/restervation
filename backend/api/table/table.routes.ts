@@ -1,7 +1,7 @@
-import express from 'express'
-import { addTables } from './table.controller'
-const router = express.Router()
+import express from 'express';
+import { addTables } from './table.controller';
+const router = express.Router();
 
-router.post('/:restId', addTables)
+router.post('/:restId', addTables);
 
-export default router
+export default router;
