@@ -1,0 +1,137 @@
+Restaurant Reservation System Architecture: 
+
+The Restaurant Reservation System allows customers to make reservations for tables at a restaurant.
+
+Requirements:
+* Reservations are exactly 60 minutes and start only at exact hours.
+* Tables can host between 2-8 people.
+* Reservations can only be made if a large enough table is available for the entire duration.
+* Users can cancel their reservations.
+
+Views:
+* List of all available slots (time + table)
+* List of all slots (with ;;o e3G54REilability indication)
+* Slot view:
+    - Display the slot (time + table)
+    - Allow user to reserve the table (if available)
+    - Allow user to cancel their reservation
+
+Client-Side:
+* Framework: React/Next.js
+* State Management: Redux
+* Styling: SCSS + MaterialUI
+* API Communication: Axios
+
+Components: 
+* AvailableSlotsList: Displays all available slots with times and tables.
+* AllSlotsList: Displays all slots with availability indications.
+* SlotView: Allows viewing, reserving, and canceling reservations for a specific slot.
+
+Server-Side: 
+* Framework: Node.js with Express
+* Database: MongoDB
+* ORM: Typegoose
+
+API Endpoints: 
+# Slots: 
+    * GET /api/slots/:restId Fetch all available slots.
+        - Getting all slots
+	- Filter on front to see only available
+
+# Reservation:
+    * GET /api/reservation/:phone : Fetch all reservations with this phone number.
+    * POST /api/reservation : Reserve a slot, body: {time, tableId, phone, slotId, restName}
+    * DELTE /api/reservation/:reservationId : Cancel a reservation
+
+# Restaurant: 
+    * POST /api/restaurant/ body: {name: X, phone: Y} - returns restId
+    * GET /api/restaurant/ - return all restraunts
+    * GET /api/restaurant/:restId - return a restraunt 
+
+# Table: 
+    * POST /api/table/:restId body: {tables: [capacity]} 
+     
+
+Database Models and structure:
+
+* Restaurants: Represents the restaurant:
+    - Fields: 
+        id: ObjectId,
+        name: string,
+        phone: string,
+	openingHours: hh:hh,
+	tables: [{
+		 id: string,
+        	 capacity: number
+	}]
+
+        
+
+* Reservations: Represents a reservation for a slot.
+    - Fields: id, time, tableId, reservedBy, slotId
+    - Key points:
+        1. reservedBy is the unique user phone number
+
+* Slots: Represents a lot of time in a specific restaurants.
+    - Fields: 
+	restId: ref ()=> Restaurants
+	time: Date (start of every hour at rest opening hours) 
+	tables: [{ 
+		tableId: string
+		capacity: number
+		isAvailable: boolean
+	}] 
+    - Key points:
+        1. reservedBy is the unique user phone number
+
+Concurrency and Race Conditions :
+* Transaction Management: Use transactions to ensure atomicity of operations during reservations and cancellations - using mongoose session feature.
+
+Data Flow:
+
+* Creating a restaurant 
+    1. Frontend asks the user to pick a name and enter a phoneNumber
+    2. Frontend sends a POST call to /api/restaurant
+    3. Backend  return a new restId after creating the restaurant at database
+    4. Frontend asks the user to create tables to the restaurant
+    5. Frontend sends a POST call to POST /api/table/:restId with body: {tables: [capacity]} 
+    6. Backend Saves the tables in Restaurants collection & in every Slot - Configuring the slots at first time can take a while and will be displayed to the user.
+
+* Get all slots: 
+    1. Frontend sends a req to the backend to route /api/slots/:restId
+    2. Backend fetch all the slots with the date the user looks at, and from unique rest Id 
+    3. Backend returns the slots value to the client
+    4. Frontend gets an array of slots that every slot has available tables and reserved tables and can filter accordingly.
+
+* Reservation Request:
+    1. User selects a slot and submits a reservation request.
+    2. Frontend sends a request to POST /api/reserve body: {time, tableId, phone, slotId}.
+    3. Backend checks availability, start a session, and processes the reservation, creating reservation and assign it the slotId
+    4. Backend updates the database and commit the session
+    5. Backend updates the availability of the table in the slotId.
+    6. Frontend updates the UI based on the response
+    7. Frontend saves in cache the resevation
+
+* Cancellation Request:
+    1. User press on cancel reservation button and a modal opens :
+        - if user has reservation saved in cache it can choose it and submit cancellation request
+        - if not:  
+            a. Frontend asks for the user phone number.
+            b. Frontend sends a request to the backend with the phone number.
+            c. backend returns the user reservations and the user can choose which to cancel
+    2. Backend verifies the reservation, processes the cancellation, and updates the database and also the slot availablity.
+    3. Frontend updates the UI based on the response and display success msg.
+
+
+
+LoadBlancerTactic: 
+
+
+
+Future Enhancements:
+* Make one single design for modals
+* Make the workflow that will make sure there will always be slots for week ahead from current time.
+* Better success and error handling: 
+	- Display success msgs upon success
+	- Display the error occuring
+
