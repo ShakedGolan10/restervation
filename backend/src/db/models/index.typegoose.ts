@@ -4,7 +4,6 @@ import { Reservations } from './reservations';
 import { Restaurants } from './restaurants';
 import { Slots } from './slots';
 
-console.log('hi: ',process.env.MONGODB_CONNECTION_STRING)
 if (process.env.MONGODB_CONNECTION_STRING) {
   mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
 } else throw new Error('MongoDB connection string isnt exist');
