@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { RestaurantsController } from './restaurants.controller';
-import { DbService } from '../../nest/services/db.service';
+import { GlobalModule } from '../../nest/modules/global.module';
 
 @Module({
   controllers: [RestaurantsController],
-  providers: [DbService],
-  exports: [DbService]
+  providers: [],
 })
 export class RestaurantsModule {}
