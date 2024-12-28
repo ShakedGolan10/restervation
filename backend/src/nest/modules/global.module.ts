@@ -7,4 +7,4 @@ import { UtilService } from '../services/util.service';
   providers: [DbService, UtilService],
   exports: [DbService, UtilService],
 })
-export class GlobalModule {}
+export class GlobalModule {};

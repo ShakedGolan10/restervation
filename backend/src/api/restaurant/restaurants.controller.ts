@@ -15,7 +15,8 @@ import { RestaurantModel } from '../../db/models/index.typegoose';
 
 @Controller('restaurant')
 export class RestaurantsController {
-  constructor(private readonly dbService: DbService) {}
+  constructor(private readonly dbService: DbService) {
+  }
 
   @Post()
   async addRestaurant(

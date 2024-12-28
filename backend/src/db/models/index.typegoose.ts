@@ -3,6 +3,9 @@ import mongoose, { ClientSession } from 'mongoose';
 import { Reservations } from './reservations';
 import { Restaurants } from './restaurants';
 import { Slots } from './slots';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 if (process.env.MONGODB_CONNECTION_STRING) {
   mongoose.connect(process.env.MONGODB_CONNECTION_STRING);

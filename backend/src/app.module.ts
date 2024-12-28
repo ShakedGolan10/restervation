@@ -4,9 +4,10 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { GlobalModule } from './global.module';
-import { Middleware } from '../../middleware';
-import { ApiModule } from './api.module';
+import { Middleware } from './middleware';
+import { ApiModule } from './nest/modules/api.module';
+import { GlobalModule } from './nest/modules/global.module';
+
 @Module({
   imports: [GlobalModule, ApiModule],
 })
