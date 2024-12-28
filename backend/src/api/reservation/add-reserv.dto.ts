@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString, Length } from 'class-validator/types';
+import { IsArray, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class AddReservPayload {
   @IsNotEmpty()

@@ -50,7 +50,7 @@ export class ReservationController {
 
   @Post()
   async addReservation(
-    @Body(StringToDatePipe) addReservPayload: AddReservPayload,
+    @Body(new StringToDatePipe(['time', 'slotId'])) addReservPayload: AddReservPayload,
     @Res() res: Response,
   ) {
     try {

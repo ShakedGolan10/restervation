@@ -1,4 +1,4 @@
-import { IsArray } from 'class-validator/types';
+import { IsArray } from 'class-validator';
 
 export class AddTablesDto {
   @IsArray()

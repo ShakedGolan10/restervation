@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es2017",
     "module": "commonjs",
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["*.ts", "api/**/*.ts", "src/**/*.ts", "db/**/*.ts", "types/*.ts"],
   "exclude": ["node_modules"]
