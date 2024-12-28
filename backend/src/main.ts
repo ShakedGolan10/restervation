@@ -5,7 +5,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    snapshot: true,
+  });
   // if (process.env.NODE_ENV === 'production') {
   //   app.useStaticAssets(path.resolve(__dirname, 'public')); // Serve static files
   // } else {

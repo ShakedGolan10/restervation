@@ -7,15 +7,13 @@ import {
 import { Middleware } from './middleware';
 import { ApiModule } from './nest/modules/api.module';
 import { GlobalModule } from './nest/modules/global.module';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
-  imports: [GlobalModule, ApiModule],
+  imports: [ DevtoolsModule.register({
+    http: process.env.NODE_ENV !== 'production',
+  }),GlobalModule, ApiModule],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(Middleware).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL,
-    });
-  }
+  configure(consumer: MiddlewareConsumer) {}
 }
