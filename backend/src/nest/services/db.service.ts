@@ -11,40 +11,59 @@ import {
   UpdateWriteOpResult,
 } from 'mongoose';
 import { MongoSession } from '../../db/models/index.typegoose';
-import { QueryReturnType } from '../../../types';
+import { ProjectedReturnType, QueryReturnType } from '../../../types';
 
 @Injectable()
 export class DbService {
   constructor() {
     console.log('Db service initialized')
   }
-  async queryAllDocs<T extends AnyParamConstructor<any>>(
+  async queryAllDocs<T extends AnyParamConstructor<any>, P extends string | undefined = undefined>(
     filterBy: FilterQuery<T>,
     model: ReturnModelType<T>,
-    projection?: string,
-  ): Promise<QueryReturnType<T>[]> {
+    projection?: P,
+  ): Promise<ProjectedReturnType<T, P>[]> {
     try {
       const queryResult = await model
         .find(filterBy, projection ? projection : undefined)
         .exec();
-      return queryResult;
+      return queryResult as ProjectedReturnType<T, P>[];
     } catch (error) {
       throw new Error(`Unable to query doc at mongo: ${error}`);
     }
   }
 
-  async queryById<T extends AnyParamConstructor<any>>(
-    id: string | ObjectId,
-    model: ReturnModelType<T>,
-    projection?: string,
-  ): Promise<QueryReturnType<T>> {
-    try {
-      const queryResult = await model.findById(id, projection).exec();
-      return queryResult as QueryReturnType<T>;
-    } catch (error) {
-      throw new Error(`Unable to query doc at mongo: ${error}`);
-    }
+  async queryById<
+  T extends AnyParamConstructor<any>,
+  P extends string | undefined = undefined
+>(
+  id: string | ObjectId,
+  model: ReturnModelType<T>,
+  projection?: P
+): Promise<ProjectedReturnType<T, P>> {
+  try {
+    const queryResult = await model.findById(id, projection).exec();
+    return queryResult as ProjectedReturnType<T, P>;
+  } catch (error) {
+    throw new Error(`Unable to query doc at MongoDB: ${error}`);
   }
+}
+
+async queryOne<
+  T extends AnyParamConstructor<any>,
+  P extends string | undefined = undefined
+>(
+  filter: FilterQuery<T>,
+  model: ReturnModelType<T>,
+  projection?: P // Optional projection
+): Promise<ProjectedReturnType<T, P> | null> {
+  try {
+    const queryResult = await model.findOne(filter, projection).exec();
+    return queryResult ? (queryResult as ProjectedReturnType<T, P>) : null;
+  } catch (error) {
+    throw new Error(`Unable to query document in MongoDB: ${error}`);
+  }
+}
 
   async createDocIfNotExists<T extends AnyParamConstructor<any>>(
     newDocData: any,

@@ -12,3 +12,12 @@ export type QueryReturnType<T extends AnyParamConstructor<any>> = IfAny<
     Omit<Require_id<InstanceType<T>>, 'typegooseName'> &
     IObjectWithTypegooseFunction
 >;
+
+export type ProjectedReturnType<
+  T extends AnyParamConstructor<any>,
+  P extends string | undefined
+> = P extends undefined
+  ? QueryReturnType<T>
+  : P extends keyof QueryReturnType<T>
+  ? Pick<QueryReturnType<T>, P>
+  : never; // Ensure the projection is a valid key or return `never` if invalid
