@@ -10,20 +10,6 @@ import { Slots } from '../../db/models/slots';
 export class ReservationsService {
   constructor(private readonly dbService: DbService) {}
 
-  async addNewReservation(
-    time: Date,
-    tableId: string,
-    phone: string,
-    slotId: string,
-    restName: string,
-  ) {
-    return await this.dbService.createDocIfNotExists<typeof Reservations>(
-      { time, tableId, reservedBy: phone, slotId, restName },
-      { tableId, time },
-      ReservationsModel,
-    );
-  }
-
   async removeReservation(id: string) {
     const sessionObj = await MongoSession.createInstance();
     try {
@@ -32,7 +18,7 @@ export class ReservationsService {
         ReservationsModel,
         sessionObj,
       );
-      if (!deletedDoc.$isDeleted()) {
+      if (!deletedDoc) {
         throw new Error('Id wasnt found to delete');
       }
       await this.changeTableAvailability(
@@ -50,17 +36,12 @@ export class ReservationsService {
     }
   }
 
-  async addReservation(
-    time: Date,
-    tableId: string,
-    phone: string,
-    slotId: string,
-    restName: string,
-  ) {
+  async addReservation(newReservationData: {time: Date, tableId: string, reservedBy: string, slotId: string, restName: string}) {
     const sessionObj = await MongoSession.createInstance();
     try {
+      const {time, tableId, slotId} = newReservationData
       const newReservation = await this.dbService.createDocIfNotExists(
-        { time, tableId, phone, slotId, restName },
+        newReservationData,
         { tableId, time },
         ReservationsModel,
         sessionObj,

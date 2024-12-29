@@ -50,17 +50,13 @@ export class ReservationController {
 
   @Post()
   async addReservation(
-    @Body(new StringToDatePipe(['time', 'slotId'])) addReservPayload: AddReservPayload,
+    @Body(new StringToDatePipe(['time'])) addReservPayload: AddReservPayload,
     @Res() res: Response,
   ) {
     try {
       const { tableId, phone, slotId, restName, time } = addReservPayload;
-      const newReservation = await this.dbService.createDocIfNotExists<
-        typeof Reservations
-      >(
-        { time, tableId, phone, slotId, restName },
-        { tableId, time: new Date(addReservPayload.time) },
-        ReservationsModel,
+      const newReservation = await this.reservService.addReservation(
+        { time, tableId, reservedBy: phone, slotId, restName },
       );
       res.status(200).json(newReservation);
     } catch (err) {

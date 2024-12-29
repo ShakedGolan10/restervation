@@ -10,6 +10,5 @@ export class AddRestaurantDto {
   phone: string;
 
   @IsNotEmpty()
-  @IsArray()
-  openingHours: string[];
+  openingHours: string;
 }

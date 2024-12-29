@@ -52,7 +52,7 @@ export class DbService {
     model: ReturnModelType<T>,
     clientSession?: MongoSession,
   ): Promise<QueryReturnType<T>> {
-    let session = !clientSession
+    let session = clientSession
       ? clientSession
       : await MongoSession.createInstance();
     try {
@@ -67,7 +67,7 @@ export class DbService {
         );
       }
       const newDoc = await (
-        await model.create({ newDocData })
+        await model.create(newDocData)
       ).save({ session: session.session });
       if (!clientSession) await session.commitTransaction();
       return newDoc;
@@ -82,7 +82,7 @@ export class DbService {
     model: ReturnModelType<T>,
     clientSession?: MongoSession,
   ) {
-    let sessionObj = !clientSession
+    let sessionObj = clientSession
       ? clientSession
       : await MongoSession.createInstance();
     try {
@@ -105,7 +105,7 @@ export class DbService {
     model: ReturnModelType<T>,
     clientSession?: MongoSession,
   ): Promise<UpdateWriteOpResult> {
-    let sessionObj = !clientSession
+    let sessionObj = clientSession
       ? clientSession
       : await MongoSession.createInstance();
     try {

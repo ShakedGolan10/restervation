@@ -15,5 +15,5 @@ export class AddReservPayload {
   restName: string;
 
   @IsNotEmpty()
-  time: string;
+  time: Date;
 }
