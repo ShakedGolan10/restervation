@@ -15,9 +15,7 @@ import { ProjectedReturnType, QueryReturnType } from '../../../types';
 
 @Injectable()
 export class DbService {
-  constructor() {
-    console.log('Db service initialized')
-  }
+  constructor() {}
   async queryAllDocs<T extends AnyParamConstructor<any>, P extends string | undefined = undefined>(
     filterBy: FilterQuery<T>,
     model: ReturnModelType<T>,
