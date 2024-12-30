@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fd0cb496.css",
+    "main.js": "/static/js/main.504e93a9.js",
+    "static/media/CircularStd-Light.otf": "/static/media/CircularStd-Light.4a1a0bfcc3a53847a945.otf",
+    "static/media/CircularStd-Black.otf": "/static/media/CircularStd-Black.757b8ac8efa71be3fcd0.otf",
+    "static/media/CircularStd-Bold.otf": "/static/media/CircularStd-Bold.5c4514a8399ec0064b9b.otf",
+    "static/media/CircularStd-Medium.otf": "/static/media/CircularStd-Medium.9ffafeddf192e8c8a111.otf",
+    "static/media/CircularStd-Book.otf": "/static/media/CircularStd-Book.9048137056e4347dbbd5.otf",
+    "index.html": "/index.html",
+    "main.fd0cb496.css.map": "/static/css/main.fd0cb496.css.map",
+    "main.504e93a9.js.map": "/static/js/main.504e93a9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fd0cb496.css",
+    "static/js/main.504e93a9.js"
+  ]
+}

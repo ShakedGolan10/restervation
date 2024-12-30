@@ -9,6 +9,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["*.ts", "api/**/*.ts", "src/**/*.ts", "db/**/*.ts", "types/*.ts"],
+  "include": ["*.ts", "public/**/*", "src/**/*.ts","types/*.ts"],
   "exclude": ["node_modules"]
 }
