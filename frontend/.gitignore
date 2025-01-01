@@ -38,3 +38,6 @@ next-env.d.ts
 firebase-admin-credentials.json
 
 *.txt
+.early.coverage
+
+/public
