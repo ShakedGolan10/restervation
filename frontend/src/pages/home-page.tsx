@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Container, Box, Typography, Grid, Card, CardActionArea, CardContent } from '@mui/material';
 import AddRest from '../cmps/add_rest.tsx';
 import ChooseRest from '../cmps/choose_rest.tsx';
+import AppCmpWrapper from '../cmps/app_cmp_wrapper.tsx';
 
-export function HomePage() {
+function HomePage() {
 
     const [selectedOption, setSelectedOption] = useState<string>('');
 
@@ -12,7 +13,7 @@ export function HomePage() {
     };
   
     return (
-      <Container sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+      <Container sx={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center', marginY: '40px'}}>
         <Box textAlign="center" my={5}>
           <Typography variant="h3" component="h1" gutterBottom textAlign={'center'}>
             Welcome to Our Reservation System
@@ -52,3 +53,5 @@ export function HomePage() {
       </Container>
     );
 }
+
+export default AppCmpWrapper(HomePage)

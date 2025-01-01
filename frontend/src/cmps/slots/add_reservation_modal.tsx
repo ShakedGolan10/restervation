@@ -7,6 +7,7 @@ export function AddReservationModal ({ open, onClose, onConfirm, tableCapacity }
   const [phone, setPhone] = useState('');
   const [people, setPeople] = useState(0);
   const [error, setError] = useState('');
+  
   function handleConfirm() {
     if (people > tableCapacity) {
       setError(`The max capacity of this table is ${tableCapacity}`);

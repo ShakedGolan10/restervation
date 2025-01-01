@@ -17,6 +17,7 @@ function MyReservations() {
       setReservations(prev => prev.filter(reserv => reserv._id !== reservId))
     } catch (error) {
       setError()
+      setTimeout(() => window.location.assign('/'), 2000)
     } finally {
       endLoader()
     }

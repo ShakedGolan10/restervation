@@ -8,7 +8,7 @@ export function ChangeThemeBtn() {
     const theme = useTheme();
     const {toggleColorMode, screenSize} = useThemeContext()
   return (
-    <IconButton sx={{ ml: 1, position: 'absolute', width: 'max-content', top: (screenSize === 'mobile') ? '0' :'50vh', left:(screenSize === 'mobile') ? '50vw' : '0' }} onClick={toggleColorMode} color="inherit">
+    <IconButton sx={{ ml: 1, position: 'fixed', width: 'max-content', top: (screenSize === 'mobile') ? '0' :'50vh', left:(screenSize === 'mobile') ? '50vw' : '0' }} onClick={toggleColorMode} color="inherit">
     {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
   </IconButton>  )
 }

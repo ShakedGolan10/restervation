@@ -57,7 +57,7 @@ function Slots({ rest, selectedDate } : { rest: Restaurant, selectedDate: Date }
     startLoader()
     try {
       if (selectedTable && selectedSlotId) await saveReservation(selectedTime, selectedTable.id, phone, selectedSlotId, rest.name)
-        await fetchSlots()
+        fetchSlots()
     } catch (error) {
         setError()      
     } finally {

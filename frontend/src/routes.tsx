@@ -1,7 +1,7 @@
 import React from "react"
-import { Rest } from "./pages/rest.tsx"
-import { HomePage } from "./pages/home-page.tsx"
-import MyReservations from "./pages/reservations.tsx"
+import RestPage from "./pages/rest-page.tsx"
+import HomePage from "./pages/home-page.tsx"
+import MyReservations from "./pages/reservations-page.tsx"
 
 // Routes accesible from the main navigation (in AppHeader)
 const routes = [
@@ -13,7 +13,7 @@ const routes = [
     },
     {
         path: 'restaurant/:restId',
-        component: <Rest />,
+        component: <RestPage />,
         label: 'Slots'
     },
     {

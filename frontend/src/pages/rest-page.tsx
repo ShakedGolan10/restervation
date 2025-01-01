@@ -5,8 +5,9 @@ import { endLoader, setError, startLoader } from '../store/system.actions.ts';
 import { Box, Typography } from '@mui/material';
 import {CalenderCmp} from '../cmps/calender_cmp.tsx';
 import { getItem } from '../services/session_storage.service.ts';
+import AppCmpWrapper from '../cmps/app_cmp_wrapper.tsx';
 
-export function Rest() {
+function RestPage() {
   const { restId }  = useParams();
   const [restaurant, setRestaurant] = useState<Restaurant>();
 
@@ -17,8 +18,8 @@ export function Rest() {
         const data = await getRest(restId);
         setRestaurant(data);
       } catch (error) {
-        console.error('Failed to fetch restaurant details', error);
         setError()
+        setTimeout(() => window.location.assign('/'), 2000)
       } finally {
         endLoader()
       }
@@ -51,3 +52,5 @@ export function Rest() {
     </>
   )
 }
+
+export default AppCmpWrapper(RestPage)

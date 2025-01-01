@@ -11,11 +11,12 @@ import {
 import { Response } from 'express';
 import { AddRestaurantDto } from './add-restaurant.dto';
 import { DbService } from '../../nest/services/db.service';
-import { RestaurantModel } from '../../db/models/index.typegoose';
+import { MongoSession, RestaurantModel } from '../../db/models/index.typegoose';
+import { TablesService } from '../table/table.service';
 
 @Controller('restaurant')
 export class RestaurantsController {
-  constructor(private readonly dbService: DbService) {
+  constructor(private readonly dbService: DbService, private readonly tableService: TablesService) {
   }
 
   @Post()
@@ -23,14 +24,19 @@ export class RestaurantsController {
     @Body() addRestaurantDto: AddRestaurantDto,
     @Res() res: Response,
   ) {
+    const sessionObj = await MongoSession.createInstance();
     try {
       const newRestaurant = await this.dbService.createDocIfNotExists(
         addRestaurantDto,
         { phone: addRestaurantDto.phone, name: addRestaurantDto.name },
         RestaurantModel,
+        sessionObj
       );
+      await this.tableService.addTables(newRestaurant.id, addRestaurantDto.tables, sessionObj);
+      await sessionObj.commitTransaction()
       res.status(201).json(newRestaurant);
     } catch (error) {
+      await sessionObj.abortTransaction()
       console.error('Error caught in controller:', error);
       throw new HttpException(
         'Failed to add restaurant',
@@ -63,8 +69,9 @@ export class RestaurantsController {
       const restaurant = await this.dbService.queryById(
         restId,
         RestaurantModel,
-        'phone',
+        '-phone',
       );
+      if (!restaurant) throw new Error(`Couldnt find rest with this Id`)
       res.status(200).json(restaurant);
     } catch (error) {
       console.error('Error caught in controller:', error);

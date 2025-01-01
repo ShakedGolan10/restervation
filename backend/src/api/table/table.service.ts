@@ -12,14 +12,12 @@ export class TablesService {
     readonly utilService: UtilService,
   ) {}
 
-  async addTables(restId: string, tables: number[]): Promise<void> {
-    const sessionObj = await MongoSession.createInstance();
+  async addTables(restId: string, tables: number[], sessionObj: MongoSession): Promise<void> {
     try {
       const restTables = tables.map((capacity) => ({
         id: this.utilService.makeId(),
         capacity,
       }));
-
       const result = await this.dbService.updateDoc(
         restId,
         { tables: restTables },
@@ -33,19 +31,16 @@ export class TablesService {
         restId,
         RestaurantModel,
       );
-      const slotsTables = rest.tables.map((table) => {
+      const slotsTables = restTables.map((table) => {
         return { ...table, isAvailable: true };
       });
-
       const slotsTime = this.utilService.buildEmptySlotsForDuration(
         rest,
         8,
         slotsTables,
       );
       await SlotsModel.insertMany(slotsTime, { session: sessionObj.session });
-      await sessionObj.commitTransaction();
     } catch (error) {
-      await sessionObj.abortTransaction();
       throw error;
     }
   }

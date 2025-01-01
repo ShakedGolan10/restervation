@@ -18,10 +18,10 @@ export function Navbar() {
   const menuItems = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <List>
-        <ListItem button component={Link} to="/">
+        <ListItem component={Link} to="/">
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button component={Link} to="/reservations">
+        <ListItem component={Link} to="/reservations">
           <ListItemText primary="My Reservations" />
         </ListItem>
       </List>

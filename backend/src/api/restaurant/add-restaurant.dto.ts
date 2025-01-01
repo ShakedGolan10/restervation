@@ -11,4 +11,7 @@ export class AddRestaurantDto {
 
   @IsNotEmpty()
   openingHours: string;
+
+  @IsArray()
+  tables: number[]
 }
