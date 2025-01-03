@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Button, IconButton, TextField, Typography } from '@mui/material';
 import { Add as AddIcon, Close as CloseIcon } from '@mui/icons-material';
-import { addRest } from '../services/rest.service.ts';
-import { endLoader, setError, startLoader } from '../store/system.actions.ts';
+import { addRest, Restaurant } from '../services/rest.service.ts';
 import AppCmpWrapper from './app_cmp_wrapper.tsx';
-import { useNavigate } from 'react-router-dom';
+import { useAsync } from '../hooks/useAsync.ts';
 
 function AddRest() {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [restaurantName, setRestaurantName] = useState<string>('');
   const [tables, setTables] = useState([{ capacity: 0, error: '' }]);
   const [openingHours, setOpeningHours] = useState({ from: '', to: '', error: '' });
-  const navigate = useNavigate()
+  const [ executeAsyncFunc ] = useAsync()
   function handleAddTable() {
     setTables([...tables, { capacity: 0, error: '' }]);
   };
@@ -44,17 +43,14 @@ function AddRest() {
   };
 
   async function saveRest() {
-    startLoader()
-    try {
       const tablesArray = tables.map((table) => table.capacity);
       const adjustedOpeningHours = `${openingHours.from}-${openingHours.to}`
-      const newRest = await addRest(restaurantName, phoneNumber, tablesArray, adjustedOpeningHours);
-      navigate(`/restaurant/${newRest._id}`);
-    } catch (error) {
-      setError()
-    } finally {
-      endLoader()
-    }
+      const newRest = await executeAsyncFunc<[Restaurant]>({
+        asyncOps: [() => addRest(restaurantName, phoneNumber, tablesArray, adjustedOpeningHours)],
+        errorMsg: 'Coudnt add restaurant',
+        successMsg: 'Added rest successfully'
+      })
+      if (newRest) setTimeout(() => window.location.assign(`/restaurant/${newRest[0]._id}`), 2000) 
   } 
 
   return (

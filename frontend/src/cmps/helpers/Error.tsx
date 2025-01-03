@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Modal, Typography } from '@mui/material';
 
-export function ErrorModal({ error, onClose }:{error: boolean, onClose: ()=> void }) {
+export function ErrorModal({ error, onClose }:{error: string, onClose: () => void }) {
     
   return (
     <Modal
-      open={error}
+      open={Boolean(error)}
       onClose={onClose}
       aria-labelledby="error-modal-title"
       aria-describedby="error-modal-description"
@@ -24,7 +24,7 @@ export function ErrorModal({ error, onClose }:{error: boolean, onClose: ()=> voi
         }}
       >
         <Typography id="error-modal-title" variant="h6" component="h2">
-          Error occured please try again
+          {`${(error) ? (error.charAt(0).toUpperCase() + error.slice(1)) : 'Somthing went wrong'}, sorry for the inconvinient, please try again.`} 
         </Typography>
       </Box>
     </Modal>

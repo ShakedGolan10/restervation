@@ -1,18 +1,22 @@
 import { store } from "./store.ts";
-import { LOADING_START, LOADING_DONE, SET_ERROR, END_ERROR } from "./system.reducer.ts";
+import { LOADING_START, LOADING_DONE, SET_ERROR, END_ERROR, OPEN_SUCCESS_MODAL } from "./system.reducer.ts";
 
 
-
-export function startLoader() {
+function startLoader() {
     store.dispatch({ type: LOADING_START, })
 }
 
-export function endLoader() {
+function endLoader() {
     store.dispatch({ type: LOADING_DONE })
 }
-export function setError() {
-    store.dispatch({ type: SET_ERROR })
+function setError(errorMsg?: string) {
+    store.dispatch({ type: SET_ERROR, payload: errorMsg })
 }
-export function closeError() {
+function closeError() {
     store.dispatch({ type: END_ERROR })
 }
+function openSuccessModal(msg?: string) {
+    store.dispatch({ type: OPEN_SUCCESS_MODAL, payload: msg })
+}
+
+export {openSuccessModal, closeError, setError, endLoader, startLoader}

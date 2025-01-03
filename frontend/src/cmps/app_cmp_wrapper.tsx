@@ -9,12 +9,12 @@ import { ErrorModal } from './helpers/error.tsx';
 const AppCmpWrapper = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
   const Wrapper = (props: P): ReactElement => {
     const isLoading = useSelector((storeState: AppStore) => storeState.systemModule.isLoading);
-    const isError = useSelector((storeState: AppStore) => storeState.systemModule.isError);
+    const error = useSelector((storeState: AppStore) => storeState.systemModule.error);
 
     return (
       <>
         {isLoading && <Loader />}
-        {isError && <ErrorModal error={isError} onClose={closeError} />}
+        {error && <ErrorModal error={error} onClose={closeError} />}
         <WrappedComponent {...props} />
       </>
     );

@@ -27,7 +27,6 @@ export async function getAllRests() {
 }
 export async function getRest(restId: string | undefined) {
     try {
-        
         const rest = await httpService.get<Restaurant>('restaurant', restId)
         return rest
     } catch (error) {

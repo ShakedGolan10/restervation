@@ -7,6 +7,7 @@ import { SlotELement } from './slot_element.tsx';
 import { AddReservationModal } from './add_reservation_modal.tsx';
 import { saveReservation } from '../../services/reservation.service.ts';
 import { Restaurant } from '../../services/rest.service.ts';
+import { useAsync } from '../../hooks/useAsync.ts';
 
 function Slots({ rest, selectedDate } : { rest: Restaurant, selectedDate: Date }) {
   const [slots, setSlots] = useState<Slot[]>([]);
@@ -16,24 +17,26 @@ function Slots({ rest, selectedDate } : { rest: Restaurant, selectedDate: Date }
   const [selectedTable, setSelectedTable] = useState<SlotTable>();
   const [selectedSlotId, setSelectedSlotId] = useState<string>();
   const [selectedTime, setSelectedTime] = useState<Date | string>(new Date());
+  const [ executeAsyncFunc ] = useAsync()
 
   useEffect(() => {
-    startLoader();
     fetchSlots();
   }, [selectedDate]);
   
   async function fetchSlots() {
     try {
+      startLoader();
       const data = await getSlots(rest._id, selectedDate); // Adjust this to match your API
       setSlots(data);
       setFilteredSlots(data);
     } catch (error) {
-      setError();
-      console.error('Failed to fetch slots', error);
+      setError('Couldnt load slots at the moment');
+      window.location.assign('/')
     } finally {
       endLoader();
     }
   };
+  
   function handleToggleAvailable() {
     if (showOnlyAvailable) {
       setFilteredSlots(slots);
@@ -54,16 +57,13 @@ function Slots({ rest, selectedDate } : { rest: Restaurant, selectedDate: Date }
   };
 
   async function handleReservationConfirm (phone: string) {
-    startLoader()
-    try {
-      if (selectedTable && selectedSlotId) await saveReservation(selectedTime, selectedTable.id, phone, selectedSlotId, rest.name)
-        fetchSlots()
-    } catch (error) {
-        setError()      
-    } finally {
+      if (selectedTable && selectedSlotId) await executeAsyncFunc({
+        asyncOps: [()=> saveReservation(selectedTime, selectedTable.id, phone, selectedSlotId, rest.name)],
+        errorMsg: 'Coldnt save reservation',
+        successMsg: 'Reservation was successful'
+      })
+      fetchSlots()
       setIsModalOpen(false);
-      endLoader()
-    }
   };
 
   return (

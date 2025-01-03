@@ -5,7 +5,8 @@ import { systemReducer } from './system.reducer.ts'
 export interface AppStore extends Store {
         systemModule: {
             isLoading: boolean;
-            isError: boolean
+            error: string, 
+            successMsg: string
         }
 } 
 

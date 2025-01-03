@@ -12,13 +12,13 @@ function RestPage() {
   const [restaurant, setRestaurant] = useState<Restaurant>();
 
   useEffect(() => {
-    startLoader()
     const loadRestaurant = async () => {
       try {
+        startLoader()
         const data = await getRest(restId);
         setRestaurant(data);
       } catch (error) {
-        setError()
+        setError('Couldnt load restraunts')
         setTimeout(() => window.location.assign('/'), 2000)
       } finally {
         endLoader()

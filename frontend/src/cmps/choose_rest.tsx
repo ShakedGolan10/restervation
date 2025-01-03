@@ -10,19 +10,18 @@ function ChooseRest() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    startLoader()
     const loadRests = async () => {
       try {
+        startLoader()
         const data = await getAllRests();
         setRests(data);
       } catch (error) {
-        setError()
-        console.error("Failed to fetch restaurants", error);
+        setError('Couldnt load rests at the moment')
+        window.location.assign('/')
       } finally {
         endLoader()
       }
     };
-
     loadRests();
   }, []);
 

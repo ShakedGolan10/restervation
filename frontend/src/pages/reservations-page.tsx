@@ -1,42 +1,36 @@
 import React, { useState } from 'react';
 import { Box, Button, Card, TextField, Typography, Grid } from '@mui/material';
-import { endLoader, startLoader, setError} from '../store/system.actions.ts';
 import { deleteReserv, getReservationsByPhoneNumber, Reservation } from '../services/reservation.service.ts';
 import AppCmpWrapper from '../cmps/app_cmp_wrapper.tsx';
+import { useAsync } from '../hooks/useAsync.ts';
 
 
 
 function MyReservations() {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [reservations, setReservations] = useState<Reservation[]>([]);
-
+  const [reservations, setReservations] = useState<Reservation[] | undefined>([]);
+  const [ executeAsyncFunc ] = useAsync()
+  
   async function cancelReserv(reservId: string) {
-    startLoader()
-    try {
-      await deleteReserv(reservId)
-      setReservations(prev => prev.filter(reserv => reserv._id !== reservId))
-    } catch (error) {
-      setError()
-      setTimeout(() => window.location.assign('/'), 2000)
-    } finally {
-      endLoader()
-    }
+      executeAsyncFunc({
+        asyncOps: [() => deleteReserv(reservId)],
+        successMsg: 'Canceled reservation successfuly',
+        errorMsg: 'Couldnt delete reservation'
+      })
+      setReservations(prev => (prev as Reservation[]).filter(reserv => reserv._id !== reservId))
   }
   
   async function handleFetchReservations() {
-    startLoader();
-    try {
-      let data = await getReservationsByPhoneNumber(phoneNumber);
-      setReservations(data);
-    } catch (error) {
-      setError();
-    } finally {
-      endLoader();
-    }
+    const data = executeAsyncFunc<[Reservation[]]>({
+      asyncOps: [() => getReservationsByPhoneNumber(phoneNumber)],
+      errorMsg: 'Couldnt get reservation'
+    })
+    if (!data[0]) setReservations(undefined)
+    else setReservations(data[0]);
   };
 
   return (
-    <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', gap: '50px', alignItems: 'center' }}>
       <Typography variant="h4" gutterBottom>Welcome to my reservations</Typography>
       <Typography variant="h6">Please enter your phone number and submit</Typography>
       <TextField
@@ -46,10 +40,14 @@ function MyReservations() {
         variant="outlined"
         sx={{ mb: 2, width: '300px' }}
       />
-      <Button onClick={handleFetchReservations} variant="contained" color="primary">Submit</Button>
+      <Button onClick={handleFetchReservations} variant="contained" color="primary" disabled={Boolean(phoneNumber.length < 10)}>Submit</Button>
       <Box sx={{ mt: 5, width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Grid container spacing={2} justifyContent="center">
-          {reservations.map((reservation) => (
+          {!reservations ? 
+            <Typography variant='h6'>
+              There are no reservations available
+            </Typography>
+          : (reservations as Reservation[]).map((reservation) => (
             <Grid item key={reservation._id} xs={12} sm={6}>
               <Card sx={{ p: 2, mb: 2 }}>
                 <Typography variant="h6">
