@@ -84,10 +84,10 @@ function Slots({ rest, selectedDate } : { rest: Restaurant, selectedDate: Date }
       </Button>
       <Box sx={{ mt: 5, width: '100%', display: 'flex', justifyContent: 'center' }}>
         <Grid container spacing={2} justifyContent="center">
-          {filteredSlots.length && filteredSlots.map((slot) => (
+          {filteredSlots.length ? filteredSlots.map((slot) => (
            <SlotELement reserveTable={reserveTable} slot={slot} key={slot._id} />
-          ))}
-          {!filteredSlots.length && <Typography variant="h6"> No slots were found for this date </Typography>}
+          )) : 
+          <Typography variant="h6"> No slots were found for this date </Typography>}
         </Grid>
       </Box>
       {(selectedTable && isModalOpen) && (

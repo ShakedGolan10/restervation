@@ -25,7 +25,6 @@ const SuccessModal = () => {
     const [isModalOpen, setModal] = useState(false)
 
     useEffect(() => {
-      console.log('modal depend triggered')
       if (!successMsg) return 
       setModal(Boolean(successMsg))
     },[successMsg])
