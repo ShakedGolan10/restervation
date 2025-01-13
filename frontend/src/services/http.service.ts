@@ -38,6 +38,7 @@ async function ajax<T>(endpoint: string, method = 'GET', data = null, query?: ob
             sessionStorage.clear()
             window.location.assign('/')
         }
+        console.error({err})
         throw err
     }
 }

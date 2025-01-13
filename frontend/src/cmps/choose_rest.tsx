@@ -17,7 +17,6 @@ function ChooseRest() {
         setRests(data);
       } catch (error) {
         setError('Couldnt load rests at the moment')
-        window.location.assign('/')
       } finally {
         endLoader()
       }
