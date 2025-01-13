@@ -3,20 +3,23 @@ import * as path from 'path';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-import { Request, Response } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     snapshot: true,
   });
+
   if (process.env.NODE_ENV === 'production') {
     const publicPath = path.resolve(__dirname, '..', 'public');
+
     // Serve static assets (React build)
     app.useStaticAssets(publicPath);
 
     // Handle frontend routes by serving index.html
-    app.use('*', (req: Request, res: Response, next) => {
-      if (!req.originalUrl.startsWith('/api')) res.sendFile(path.resolve(publicPath, 'index.html'));
+    app.use('*', (req, res, next) => {
+      if (!req.originalUrl.startsWith('/api')) {
+        return res.sendFile(path.resolve(publicPath, 'index.html'));
+      }
       next();
     });
   } else {
