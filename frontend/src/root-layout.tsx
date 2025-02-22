@@ -14,7 +14,7 @@ export function RootLayout() {
     <>
     <Navbar />
     <SuccessModal />
-    <Container sx={{minHeight: '100vh',padding: '0 0 0 0' ,marginTop: '60px' , maxHeight: 'max-content', display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+    <Container sx={{minHeight: '100vh',padding: '0 0 0 0' ,paddingTop: '60px' , maxHeight: 'max-content', display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
     <Routes>
       {routes.map((route) => (
       <Route
