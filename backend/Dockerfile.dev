@@ -1,0 +1,15 @@
+FROM node:20
+
+WORKDIR /server
+
+COPY package.json /server
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3030
+
+VOLUME [ "/server/node_modules" ]
+
+CMD ["npm", "run", "start"]

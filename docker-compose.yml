@@ -1,0 +1,33 @@
+networks:
+  rest-net:
+    name: rest-net
+    driver: bridge
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3030:3030'
+    volumes:
+      - /server/node_modules
+      - ./backend:/server
+    env_file:
+      - ./backend/.env
+    networks:
+      - rest-net
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    networks:
+      - rest-net
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
